@@ -4,6 +4,7 @@ import { EncodedDBInterface } from './DB/EncodedDB';
 import MySQLMigrationV1 from './DB/MySQL/migrate/MySQLMigrationV1';
 import MySQLMigrationV2 from './DB/MySQL/migrate/MySQLMigrationV2';
 import MySQLMigrationV3 from './DB/MySQL/migrate/MySQLMigrationV3';
+import MySQLMigrationV4 from './DB/MySQL/migrate/MySQLMigrationV4';
 import MySQLEncodedDB from './DB/MySQL/MySQLEncodedDB';
 import MySQLOperator from './DB/MySQL/MySQLOperator';
 import MySQLProgramsDB from './DB/MySQL/MySQLProgramsDB';
@@ -92,6 +93,7 @@ namespace ModelFactorySetting {
                 factory.reg('MigrationV1', () => { return new MySQLMigrationV1(operator); });
                 factory.reg('MigrationV2', () => { return new MySQLMigrationV2(operator); });
                 factory.reg('MigrationV3', () => { return new MySQLMigrationV3(operator); });
+                factory.reg('MigrationV4', () => { return new MySQLMigrationV4(operator); });
                 break;
 
             case 'sqlite3':
