@@ -115,7 +115,7 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
      * @return string
      */
     protected getMinColumns(): string {
-        return 'id, channelId, startAt, endAt, isFree, name, description, extended, genre1, genre2, channelType, videoType, videoResolution, videoStreamContent, videoComponentType, audioSamplingRate, audioComponentType';
+        return 'id, channelId, startAt, endAt, isFree, name, description, extended, genre1, genre2, sub1Genre1, sub1Genre2, sub2Genre1, sub2Genre2, channelType, videoType, videoResolution, videoStreamContent, videoComponentType, audioSamplingRate, audioComponentType';
     }
 
     /**
@@ -148,6 +148,10 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
                 + 'extended,'
                 + 'genre1,'
                 + 'genre2,'
+                + 'sub1Genre1,'
+                + 'sub1Genre2,'
+                + 'sub2Genre1,'
+                + 'sub2Genre2,'
                 + 'channelType,'
                 + 'channel,'
                 + 'videoType,'
@@ -167,16 +171,31 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
             const date = DateUtil.getJaDate(new Date(program.startAt));
             let genre1: number | null = null;
             let genre2: number | null = null;
+            let sub1Genre1: number | null = null;
+            let sub1Genre2: number | null = null;
+            let sub2Genre1: number | null = null;
+            let sub2Genre2: number | null = null;
+
             if (typeof program.genres === 'undefined') {
                 genre1 = null;
                 genre2 = null;
+                sub1Genre1 = null;
+                sub1Genre2 = null;
+                sub2Genre1 = null;
+                sub2Genre2 = null;
             } else {
-                for (let i = 0; i < program.genres.length; i++) {
-                    if (program.genres[0].lv1 < 0xE || i + 1 === program.genres.length) {
-                        genre1 = program.genres[i].lv1;
-                        genre2 = typeof program.genres[i].lv2 === 'undefined' ? null : program.genres[i].lv2;
-                        break;
-                    }
+                // 3つまで取得
+                if (program.genres[0].lv1 < 0xE) {
+                  genre1 = program.genres[0].lv1;
+                  genre2 = typeof program.genres[0].lv2 === 'undefined' ? null : program.genres[0].lv2;
+                }
+                if (program.genres.length > 1 && program.genres[1].lv1 < 0xE) {
+                  sub1Genre1 = program.genres[1].lv1;
+                  sub1Genre2 = typeof program.genres[1].lv2 === 'undefined' ? null : program.genres[1].lv2;
+                }
+                if (program.genres.length > 2 && program.genres[2].lv1 < 0xE) {
+                  sub2Genre1 = program.genres[2].lv1;
+                  sub2Genre2 = typeof program.genres[2].lv2 === 'undefined' ? null : program.genres[2].lv2;
                 }
             }
 
@@ -207,6 +226,10 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
                 this.createExtendedStr(program.extended),
                 genre1,
                 genre2,
+                sub1Genre1,
+                sub1Genre2,
+                sub2Genre1,
+                sub2Genre2,
                 channelType,
                 channel,
             ];
@@ -237,9 +260,9 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
                 let valueCnt = 0;
                 for (let i = 0; i < cnt; i++) {
                     str += '( '
-                    + this.operator.createValueStr(valueCnt + 1, valueCnt + 25)
+                    + this.operator.createValueStr(valueCnt + 1, valueCnt + 29)
                     + ' ),';
-                    valueCnt += 25;
+                    valueCnt += 29;
                 }
                 str = str.substr(0, str.length - 1);
 
@@ -261,6 +284,10 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
                         + 'extended = excluded.extended, '
                         + 'genre1 = excluded.genre1, '
                         + 'genre2 = excluded.genre2, '
+                        + 'sub1Genre1 = excluded.sub1Genre1, '
+                        + 'sub1Genre2 = excluded.sub1Genre2, '
+                        + 'sub2Genre1 = excluded.sub2Genre1, '
+                        + 'sub2Genre2 = excluded.sub2Genre2, '
                         + 'channelType = excluded.channelType, '
                         + 'channel = excluded.channel, '
                         + 'videoType = excluded.videoType, '
@@ -702,7 +729,7 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
      * @return string
      */
     protected createShortGenre(genre1: number): string {
-        return `genre1 = ${ genre1 }`;
+        return `(genre1 = ${ genre1 } OR sub1Genre1 = ${ genre1 } OR sub2Genre1 = ${ genre1 })`;
     }
 
     /**
@@ -712,7 +739,7 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
      * @return string
      */
     protected createGenre(genre1: number, genre2: number): string {
-        return `${ this.createShortGenre(genre1) } and genre2 = ${ genre2 }`;
+        return `((genre1 = ${ genre1 } AND genre2 = ${ genre2 }) OR (sub1Genre1 = ${ genre1 } AND sub1Genre2 = ${ genre2 }) OR (sub2Genre1 = ${ genre1 } AND sub2Genre2 = ${ genre2 }))`;
     }
 
     /**
@@ -901,4 +928,3 @@ abstract class ProgramsDB extends DBTableBase implements ProgramsDBInterface {
 }
 
 export { ChannelTypeHash, Broadcast, KeywordOption, KeywordQuery, ProgramsDBInterface, ProgramsDB };
-
