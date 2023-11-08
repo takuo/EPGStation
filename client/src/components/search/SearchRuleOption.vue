@@ -4,6 +4,14 @@
             <div class="pa-4">
                 <v-expansion-panels :value.sync="searchState.optionPanel" accordion multiple flat class="option-panels">
                     <v-expansion-panel>
+                        <v-expansion-panel-header>ルール名</v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <SearchOptionRow>
+                                <v-text-field v-model="searchState.ruleName" label="rule name" clearable></v-text-field>
+                            </SearchOptionRow>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
                         <v-expansion-panel-header>オプション</v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <SearchOptionRow>

@@ -65,13 +65,13 @@ export default class RuleItems extends Vue {
                 this.ruleApiModel.enable(item.display.id);
                 this.snackbarState.open({
                     color: 'success',
-                    text: `有効化: ${item.display.keyword}`,
+                    text: `有効化: ${item.display.ruleName || item.display.keyword}`,
                 });
             } else {
                 this.ruleApiModel.disable(item.display.id);
                 this.snackbarState.open({
                     color: 'success',
-                    text: `無効化: ${item.display.keyword}`,
+                    text: `無効化: ${item.display.ruleName || item.display.keyword}`,
                 });
             }
         } catch (err) {

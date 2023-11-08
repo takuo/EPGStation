@@ -5,6 +5,7 @@
                 <thead>
                     <tr>
                         <td class="text-left toggle"></td>
+                        <td class="text-left">ルール名</td>
                         <td class="text-left">キーワード</td>
                         <td class="text-left">除外キーワード</td>
                         <td class="text-left">放送局</td>
@@ -18,6 +19,7 @@
                         <td class="toggle">
                             <v-switch v-if="isEditMode === false" v-model="item.display.isEnable" hide-details dense value v-on:change="changeState(item)"></v-switch>
                         </td>
+                        <td>{{ item.display.ruleName }}</td>
                         <td>{{ item.display.keyword }}</td>
                         <td>{{ item.display.ignoreKeyword }}</td>
                         <td>{{ item.display.channels }}</td>

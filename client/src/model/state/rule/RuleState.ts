@@ -92,6 +92,7 @@ export default class RuleState implements IRuleState {
         return {
             display: {
                 id: r.id,
+                ruleName: r.ruleName,
                 isEnable: r.reserveOption.enable,
                 keyword: typeof r.searchOption.keyword === 'undefined' ? '-' : r.searchOption.keyword,
                 ignoreKeyword: typeof r.searchOption.ignoreKeyword === 'undefined' ? '-' : r.searchOption.ignoreKeyword,

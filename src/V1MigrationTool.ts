@@ -180,6 +180,7 @@ class V1MigrationTool {
      */
     private convertOldRuleToAddRuleOption(oldRule: OldRuleItem, parentDirectoryName: string): apid.AddRuleOption {
         const newRule: apid.AddRuleOption = {
+            ruleName: '',
             isTimeSpecification: false,
             searchOption: this.createSearchOption(oldRule),
             reserveOption: this.createReserveOption(oldRule),

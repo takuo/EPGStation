@@ -37,6 +37,7 @@ import { Route } from 'vue-router';
 import * as apid from '../../../api';
 
 interface PageInfo {
+    ruleName: string;
     isTimeSpecification: boolean;
     searchOption: SearchOption | null;
     timeReserveOption: TimeReserveOption | null;
@@ -257,6 +258,7 @@ export default class Search extends Vue {
         // 検索 or 時刻ルール新規作成
         try {
             const pageInfo: PageInfo = {
+                ruleName: this.searchState.ruleName,
                 isTimeSpecification: this.searchState.isTimeSpecification,
                 searchOption: cloneDeep(this.searchState.searchOption),
                 timeReserveOption: cloneDeep(this.searchState.timeReserveOption),
@@ -345,6 +347,7 @@ export default class Search extends Vue {
                     // ページ情報復元
                     const pageInfo = this.scrollState.getScrollData<PageInfo>();
                     if (pageInfo !== null) {
+                        this.searchState.ruleName = pageInfo.ruleName;
                         this.searchState.isTimeSpecification = pageInfo.isTimeSpecification;
                         this.searchState.searchOption = cloneDeep(pageInfo.searchOption);
                         this.searchState.timeReserveOption = cloneDeep(pageInfo.timeReserveOption);

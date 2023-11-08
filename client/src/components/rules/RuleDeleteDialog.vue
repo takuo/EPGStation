@@ -2,7 +2,7 @@
     <v-dialog v-if="isRemove === false" v-model="dialogModel" max-width="300" scrollable>
         <v-card>
             <v-card-text class="pa-4">
-                <div class="text--primary">{{ ruleItem.display.keyword }} を削除しますか?</div>
+                <div class="text--primary">{{ ruleItem.display.ruleName || ruleItem.display.keyword }} を削除しますか?</div>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -71,12 +71,12 @@ export default class RuleDeleteDialog extends Vue {
             await this.ruleApiModel.delete(this.ruleItem.display.id);
             this.snackbarState.open({
                 color: 'success',
-                text: `${this.ruleItem.display.keyword} を削除`,
+                text: `${this.ruleItem.display.ruleName || this.ruleItem.display.keyword} を削除`,
             });
         } catch (err) {
             this.snackbarState.open({
                 color: 'error',
-                text: `${this.ruleItem.display.keyword} を削除に失敗`,
+                text: `${this.ruleItem.display.ruleName || this.ruleItem.display.keyword} を削除に失敗`,
             });
             console.error(err);
         }

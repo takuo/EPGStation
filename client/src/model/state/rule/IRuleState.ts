@@ -6,6 +6,7 @@ export interface RuleFetchOption extends apid.GetRuleOption {
 
 export interface RuleStateDisplayData {
     id: apid.RuleId;
+    ruleName: string;
     isEnable: boolean;
     keyword: string;
     ignoreKeyword: string;

@@ -216,6 +216,7 @@ export interface RuleKeywordInfo {
  * Rule 追加オプション
  */
 export interface AddRuleOption {
+    ruleName: string;
     isTimeSpecification: boolean;
     searchOption: RuleSearchOption;
     reserveOption: RuleReserveOption;
