@@ -152,6 +152,7 @@ export interface QuerySearchOption {
 }
 
 export default interface ISearchState {
+    ruleName: string;
     isTimeSpecification: boolean;
     searchOption: SearchOption | null;
     timeReserveOption: TimeReserveOption | null;

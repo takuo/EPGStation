@@ -31,6 +31,7 @@ import ISearchState, {
 
 @injectable()
 export default class SearchState implements ISearchState {
+    public ruleName: string = '';
     public isTimeSpecification: boolean = false;
     public searchOption: SearchOption | null = null;
     public timeReserveOption: TimeReserveOption | null = null;
@@ -131,6 +132,7 @@ export default class SearchState implements ISearchState {
      */
     public async init(ruleId: apid.RuleId | null = null): Promise<void> {
         this.ruleId = ruleId;
+        this.ruleName = '';
         this.isTimeSpecification = false;
         this.initSearchOption();
         this.initTimeReserveOption();
@@ -337,6 +339,7 @@ export default class SearchState implements ISearchState {
      * @param rule: apid.Rule
      */
     private setRuleOption(rule: apid.Rule): void {
+        this.ruleName = rule.ruleName;
         this.isTimeSpecification = rule.isTimeSpecification;
         if (this.isTimeSpecification === true) {
             this.setTimeReserveRuleSearchOption(rule.searchOption);
@@ -1222,6 +1225,7 @@ export default class SearchState implements ISearchState {
             }
 
             rule = {
+                ruleName: this.ruleName,
                 isTimeSpecification: false,
                 searchOption: this.createRuleSearchOption(this.searchOption),
                 reserveOption: this.createRuleReserveOption(this.reserveOption),
@@ -1235,6 +1239,7 @@ export default class SearchState implements ISearchState {
             }
 
             rule = {
+                ruleName: this.ruleName,
                 isTimeSpecification: true,
                 searchOption: this.createTimeSpecificationRuleSearchOption(this.timeReserveOption),
                 reserveOption: this.createRuleReserveOption(this.reserveOption),

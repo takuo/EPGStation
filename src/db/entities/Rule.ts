@@ -274,4 +274,11 @@ export default class Rule extends BaseEntity {
         default: false,
     })
     public isDeleteOriginalAfterEncode: boolean = false;
+
+    @Column({
+        type: 'text',
+        nullable: true,
+        default: '',
+    })
+    public ruleName: string | null = ''; // ルール名
 }

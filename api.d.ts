@@ -203,6 +203,7 @@ export interface Rule extends AddRuleOption {
 export interface RuleKeywordItem {
     id: RuleId;
     keyword: string;
+    ruleName: string;
 }
 
 /**
@@ -216,6 +217,7 @@ export interface RuleKeywordInfo {
  * Rule 追加オプション
  */
 export interface AddRuleOption {
+    ruleName: string;
     isTimeSpecification: boolean;
     searchOption: RuleSearchOption;
     reserveOption: RuleReserveOption;
@@ -336,6 +338,7 @@ export interface GetRuleOption {
     limit?: number;
     type?: GetReserveType;
     keyword?: string;
+    ruleName?:string;
 }
 
 /**

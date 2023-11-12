@@ -15,7 +15,7 @@
                         :loading="loading"
                         :items="searchState.ruleItems"
                         :search-input.sync="search"
-                        item-text="keyword"
+                        :item-text="i => i.ruleName || i.keyword"
                         item-value="id"
                         cache-items
                         flat

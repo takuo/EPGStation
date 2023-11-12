@@ -77,6 +77,7 @@ class RecordedSearchState implements IRecordedSearchState {
         this.ruleItems.push({
             id: this.ruleId,
             keyword: typeof rule.searchOption.keyword === 'undefined' ? '' : rule.searchOption.keyword,
+            ruleName: typeof rule.ruleName === 'undefined' ? '' : rule.ruleName,
         });
     }
 

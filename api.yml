@@ -519,6 +519,8 @@ components:
                     $ref: '#/components/schemas/RuleId'
                 keyword:
                     type: string
+                ruleName:
+                    type: string
 
         RuleKeywordInfo:
             description: ルールキーワード検索結果
