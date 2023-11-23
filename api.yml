@@ -524,6 +524,8 @@ components:
                     $ref: '#/components/schemas/RuleId'
                 keyword:
                     type: string
+                ruleName:
+                    type: string
 
         RuleKeywordInfo:
             description: ルールキーワード検索結果
@@ -544,6 +546,9 @@ components:
                 - searchOption
                 - reserveOption
             properties:
+                ruleName:
+                    description: ルール名
+                    type: string
                 isTimeSpecification:
                     description: 時刻指定予約か
                     type: boolean

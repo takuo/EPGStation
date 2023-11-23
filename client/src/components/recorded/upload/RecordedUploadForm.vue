@@ -30,7 +30,7 @@
                     :loading="ruleLoading"
                     :items="uploadState.ruleItems"
                     :search-input.sync="ruleSearchInput"
-                    item-text="keyword"
+                    :item-text="item => item.ruleName || item.keyword"
                     item-value="id"
                     cache-items
                     flat

@@ -17,6 +17,7 @@ import IExecutionManagementModel from '../../IExecutionManagementModel';
 import ILogger from '../../ILogger';
 import ILoggerModel from '../../ILoggerModel';
 import IRecordingUtilModel, { RecFilePathInfo } from './IRecordingUtilModel';
+import IRuleDB from '../../db/IRuleDB';
 
 @injectable()
 class RecordingUtilModel implements IRecordingUtilModel {
@@ -26,6 +27,7 @@ class RecordingUtilModel implements IRecordingUtilModel {
     private channelDB: IChannelDB;
     private programDB: IProgramDB;
     private videoFileDB: IVideoFileDB;
+    private ruleDB: IRuleDB;
     private videoUtil: IVideoUtil;
 
     constructor(
@@ -35,6 +37,7 @@ class RecordingUtilModel implements IRecordingUtilModel {
         @inject('IChannelDB') channelDB: IChannelDB,
         @inject('IProgramDB') programDB: IProgramDB,
         @inject('IVideoFileDB') videoFileDB: IVideoFileDB,
+        @inject('IRuleDB') ruleDB: IRuleDB,
         @inject('IVideoUtil') videoUtil: IVideoUtil,
     ) {
         this.log = logger.getLogger();
@@ -43,6 +46,7 @@ class RecordingUtilModel implements IRecordingUtilModel {
         this.channelDB = channelDB;
         this.programDB = programDB;
         this.videoFileDB = videoFileDB;
+        this.ruleDB = ruleDB;
         this.videoUtil = videoUtil;
     }
 
@@ -327,6 +331,7 @@ class RecordingUtilModel implements IRecordingUtilModel {
             this.log.system.warn(`channel name get error: ${src.channelId}`);
         }
         const jaDate = DateUtil.getJaDate(new Date(src.startAt));
+        const rule = src.ruleId == null ? null : await this.ruleDB.findId(src.ruleId);
 
         return format
             .replace(/%YEAR%/g, DateUtil.format(jaDate, 'yyyy'))
@@ -345,7 +350,9 @@ class RecordingUtilModel implements IRecordingUtilModel {
             .replace(/%SID%/g, sid)
             .replace(/%ID%/g, id.toString())
             .replace(/%TITLE%/g, programName === null ? 'NULL' : programName)
-            .replace(/%HALF_WIDTH_TITLE%/g, src.halfWidthName === null ? 'NULL' : src.halfWidthName);
+            .replace(/%HALF_WIDTH_TITLE%/g, src.halfWidthName === null ? 'NULL' : src.halfWidthName)
+            .replace(/%RULEID%/g, src.ruleId?.toString(10) || 'NULL')
+            .replace(/%RULENAME%/g, rule?.ruleName || 'NULL');
     }
 }
 

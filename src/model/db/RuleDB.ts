@@ -206,6 +206,7 @@ export default class RuleDB implements IRuleDB {
     private convertRuleToDBRule(rule: RuleWithCnt | apid.Rule | apid.AddRuleOption): Rule {
         const convertedRule: Rule = <any>{
             updateCnt: typeof rule === 'undefined' ? 0 : (<RuleWithCnt>rule).updateCnt,
+            ruleName: rule.ruleName,
             isTimeSpecification: rule.isTimeSpecification,
             keyword: typeof rule.searchOption.keyword === 'undefined' ? null : rule.searchOption.keyword,
             halfWidthKeyword:
@@ -316,6 +317,7 @@ export default class RuleDB implements IRuleDB {
         const convertedRule: RuleWithCnt = {
             id: rule.id,
             updateCnt: rule.updateCnt,
+            ruleName: rule.ruleName == null ? '' : rule.ruleName,
             isTimeSpecification: rule.isTimeSpecification,
             searchOption: {
                 keyCS: rule.keyCS,
@@ -512,7 +514,7 @@ export default class RuleDB implements IRuleDB {
 
         let queryBuilder = connection
             .createQueryBuilder()
-            .select('rule.id, rule.keyword')
+            .select('rule.id, rule.keyword, rule.ruleName')
             .from(Rule, 'rule')
             .orderBy('rule.id', 'ASC');
 
@@ -560,6 +562,7 @@ export default class RuleDB implements IRuleDB {
             return {
                 id: r.id,
                 keyword: r.keyword === null ? '' : r.keyword,
+                ruleName: r.ruleName === null ? '' : r.ruleName,
             };
         });
     }

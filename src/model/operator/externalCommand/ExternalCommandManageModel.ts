@@ -15,6 +15,7 @@ import ILogger from '../../ILogger';
 import ILoggerModel from '../../ILoggerModel';
 import { IPromiseQueue } from '../../IPromiseQueue';
 import IExternalCommandManageModel from './IExternalCommandManageModel';
+import IRuleDB from '../../db/IRuleDB';
 
 @injectable()
 export default class ExternalCommandManageModel implements IExternalCommandManageModel {
@@ -23,6 +24,7 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
     private queue: IPromiseQueue;
     private channelDB: IChannelDB;
     private recordedDB: IRecordedDB;
+    private ruleDB: IRuleDB;
     private videoUtil: IVideoUtil;
 
     constructor(
@@ -31,6 +33,7 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
         @inject('IPromiseQueue') queue: IPromiseQueue,
         @inject('IChannelDB') channelDB: IChannelDB,
         @inject('IRecordedDB') recordedDB: IRecordedDB,
+        @inject('IRuleDB') ruleDB: IRuleDB,
         @inject('IVideoUtil') videoUtil: IVideoUtil,
     ) {
         this.log = logger.getLogger();
@@ -38,6 +41,7 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
         this.queue = queue;
         this.channelDB = channelDB;
         this.recordedDB = recordedDB;
+        this.ruleDB = ruleDB;
         this.videoUtil = videoUtil;
     }
 
@@ -203,6 +207,7 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
         const cmds = ProcessUtil.parseCmdStr(cmd);
 
         const channel = await this.channelDB.findId(reserve.channelId);
+        const rule = reserve.ruleId == null ? null : await this.ruleDB.findId(reserve.ruleId);
 
         return new Promise<void>(resolve => {
             const child = spawn(cmds.bin, cmds.args, {
@@ -224,6 +229,8 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
                     HALF_WIDTH_DESCRIPTION: reserve.halfWidthDescription,
                     EXTENDED: reserve.extended,
                     HALF_WIDTH_EXTENDED: reserve.halfWidthExtended,
+                    RULEID: reserve.ruleId ?? '',
+                    RULENAME: rule?.ruleName ?? '',
                 },
             } as any);
 
@@ -266,6 +273,7 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
         const cmds = ProcessUtil.parseCmdStr(cmd);
 
         const channel = await this.channelDB.findId(recorded.channelId);
+        const rule = recorded.ruleId == null ? null : await this.ruleDB.findId(recorded.ruleId);
 
         return new Promise<void>(async resolve => {
             const child = spawn(cmds.bin, cmds.args, {
@@ -287,6 +295,8 @@ export default class ExternalCommandManageModel implements IExternalCommandManag
                     HALF_WIDTH_DESCRIPTION: recorded.halfWidthDescription,
                     EXTENDED: recorded.extended,
                     HALF_WIDTH_EXTENDED: recorded.halfWidthExtended,
+                    RULEID: recorded.ruleId ?? '',
+                    RULENAME: rule?.ruleName ?? '',
                     RECPATH:
                         typeof recorded.videoFiles === 'undefined' || recorded.videoFiles.length < 0
                             ? null

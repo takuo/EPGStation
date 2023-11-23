@@ -9,7 +9,7 @@
                             <!--
                             {{ item.keyword }}
                             -->
-                            <v-list-item-title class="subtitle-1">{{ item.display.keyword }}</v-list-item-title>
+                            <v-list-item-title class="subtitle-1">{{ item.display.ruleName || item.display.keyword }}</v-list-item-title>
                         </div>
                         <div class="menu d-flex align-center">
                             <span class="mx-2 grey--text text--lighten-1">{{ item.display.reservationsCnt }}</span>
