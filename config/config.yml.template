@@ -37,6 +37,11 @@ thumbnailPosition: 5
 ffmpeg: /usr/local/bin/ffmpeg
 ffprobe: /usr/local/bin/ffprobe
 
+#imageUploader:
+#    url: https://example.com/upload
+#    token: api-token-for-bearer-auth
+#    formKey: file
+
 encodeProcessNum: 4
 concurrentEncodeNum: 1
 encode:

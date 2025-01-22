@@ -1,5 +1,5 @@
 import * as apid from '../../../../api';
-import BaseVide from './BaseVideo';
+import BaseVideo from './BaseVideo';
 
 export type VideoType = 'Normal' | 'RecordedStreaming' | 'LiveHLS' | 'RecordedHLS' | 'LiveMpegTs';
 

@@ -190,4 +190,7 @@ export default interface IConfigFile {
 
     // 配信先 kodi 設定
     kodiHosts?: KodiInfo[];
+
+    // 画像アップローダー
+    imageUploader?: apid.ImageUploaderInfo;
 }

@@ -171,6 +171,10 @@ export default class ConfigApiModel implements IConfigApiModel {
             });
         }
 
+        if (typeof config.imageUploader !== 'undefined') {
+            result.imageUploader = config.imageUploader;
+        }
+
         return result;
     }
 }

@@ -6,4 +6,5 @@ export default interface IB24RenderState {
     isInited(): boolean;
     showSubtitle(): void;
     disabledSubtitle(): void;
+    getCanvas(): HTMLCanvasElement | null;
 }

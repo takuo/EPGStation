@@ -320,6 +320,26 @@ components:
                     items:
                         type: string
 
+                imageUploader:
+                    $ref: '#/components/schemas/ImageUploaderInfo'
+
+        ImageUploaderInfo:
+            description: 画像アップローダー設定
+            type: object
+            required:
+                - url
+            properties:
+                url:
+                    description: 画像アップロード先 URL
+                    type: string
+                formKey:
+                    description: 画像アップロード時のform dataキー
+                    type: string
+                    default: 'file'
+                token:
+                    description: Authorization token
+                    type: string
+
         ChannelItems:
             type: array
             items:

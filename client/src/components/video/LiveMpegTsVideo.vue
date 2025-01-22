@@ -198,5 +198,26 @@ export default class LiveMpegTsVideo extends BaseVideo {
             this.superimposeRenderer.hide();
         }
     }
+
+    public capture(): string {
+        if (this.video === null) {
+            return '';
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = this.video.videoWidth;
+        canvas.height = this.video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(this.video, 0, 0);
+        const c = this.getCaptionCanvas();
+        if (c) {
+            ctx?.drawImage(c, 0, 0, canvas.width, canvas.height);
+        }
+        // キャプチャーを画像に変換
+        return canvas.toDataURL('image/png');
+    }
+
+    public getCaptionCanvas(): HTMLCanvasElement | null {
+        return this.captionRenderer?.getViewCanvas() || null;
+    }
 }
 </script>

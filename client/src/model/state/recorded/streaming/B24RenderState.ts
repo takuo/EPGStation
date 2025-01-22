@@ -67,4 +67,11 @@ export default class B24RenderState implements IB24RenderState {
             this.b24Renderer.hide();
         }
     }
+
+    /**
+     *   canvasを取得する
+     */
+    public getCanvas(): HTMLCanvasElement | null {
+        return this.b24Renderer?.getViewCanvas() || null;
+    }
 }

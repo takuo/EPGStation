@@ -222,7 +222,7 @@ export default class StreamApiModel implements IStreamApiModel {
      * @param option: apid.LiveStreamOption
      * @return Promise<StreamResponse>
      */
-    public async startRecordedWebMStream(option: apid.RecordedStreanOption): Promise<StreamResponse> {
+    public async startRecordedWebMStream(option: apid.RecordedStreamOption): Promise<StreamResponse> {
         const conf = await this.getRecordedVideoConfig('webm', option);
 
         // stream 生成
@@ -250,7 +250,7 @@ export default class StreamApiModel implements IStreamApiModel {
      * @param option: apid.LiveStreamOption
      * @return Promise<StreamResponse>
      */
-    public async startRecordedMp4Stream(option: apid.RecordedStreanOption): Promise<StreamResponse> {
+    public async startRecordedMp4Stream(option: apid.RecordedStreamOption): Promise<StreamResponse> {
         const conf = await this.getRecordedVideoConfig('mp4', option);
 
         // stream 生成
@@ -278,7 +278,7 @@ export default class StreamApiModel implements IStreamApiModel {
      * @param option: apid.LiveStreamOption
      * @return Promise<apid.StreamId>
      */
-    public async startRecordedHLSStream(option: apid.RecordedStreanOption): Promise<apid.StreamId> {
+    public async startRecordedHLSStream(option: apid.RecordedStreamOption): Promise<apid.StreamId> {
         const conf = await this.getRecordedVideoConfig('hls', option);
 
         // stream 生成
@@ -299,12 +299,12 @@ export default class StreamApiModel implements IStreamApiModel {
     /**
      * config から指定した stream コマンドを取り出す
      * @param type: 'webm' | 'mp4' | 'hls'
-     * @param option apid.RecordedStreanOption
+     * @param option apid.RecordedStreamOption
      * @return Promise<StreamConfig>
      */
     private async getRecordedVideoConfig(
         type: 'webm' | 'mp4' | 'hls',
-        option: apid.RecordedStreanOption,
+        option: apid.RecordedStreamOption,
     ): Promise<RecordedStreamConfig> {
         const isEncodedVideo = await this.isEncodedVideo(option.videoFileId);
 
@@ -469,7 +469,7 @@ export default class StreamApiModel implements IStreamApiModel {
                     name: '',
                     startAt: 0,
                     endAt: 0,
-                    viodeFileId: info.info.videoFileId,
+                    videoFileId: info.info.videoFileId,
                     recordedId: 0,
                 };
 

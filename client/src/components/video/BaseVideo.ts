@@ -1,7 +1,7 @@
 import UaUtil from '@/util/UaUtil';
 import { Component, Vue } from 'vue-property-decorator';
 
-export default abstract class BaseVide extends Vue {
+export default abstract class BaseVideo extends Vue {
     protected video: HTMLVideoElement | null = null;
     protected lastSubtitleState: TextTrackMode = 'disabled';
 
@@ -360,5 +360,21 @@ export default abstract class BaseVide extends Vue {
                 this.disabledSubtitle();
             }
         }
+    }
+
+    public capture(): string {
+        if (this.video === null) {
+            return '';
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = this.video.videoWidth;
+        canvas.height = this.video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(this.video, 0, 0);
+        return canvas.toDataURL('image/png');
+    }
+
+    public getVideoElement(): HTMLVideoElement | null {
+        return this.video;
     }
 }

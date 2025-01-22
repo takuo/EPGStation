@@ -521,6 +521,16 @@ export interface Config {
         };
     };
     kodiHosts?: string[];
+    imageUploader?: ImageUploaderInfo;
+}
+
+/**
+ * 画像アップローダー情報
+ */
+export interface ImageUploaderInfo {
+    url: string;
+    formKey?: string;
+    token?: string;
 }
 
 /**
@@ -663,7 +673,7 @@ export interface LiveStreamOption {
     mode: number; // config 設定
 }
 
-export interface RecordedStreanOption {
+export interface RecordedStreamOption {
     videoFileId: VideoFileId;
     playPosition: number; // 再生位置 (秒)
     mode: number; // config 設定
@@ -689,7 +699,7 @@ export interface LiveStreamInfoItem {
  * ビデオファイルストリーム情報
  */
 export interface VideoFileStreamInfoItem extends LiveStreamInfoItem {
-    viodeFileId: VideoFileId;
+    videoFileId: VideoFileId;
     recordedId: RecordedId;
 }
 

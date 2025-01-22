@@ -87,6 +87,12 @@
                                         <span>{{ durationStr }}</span>
                                     </div>
                                     <v-spacer></v-spacer>
+                                    <v-btn v-if="isEnabledClipboard === true" icon dark v-on:click="clipboardCopy">
+                                        <v-icon>mdi-content-copy</v-icon>
+                                    </v-btn>
+                                    <v-btn icon dark v-on:click="capture">
+                                        <v-icon>mdi-camera</v-icon>
+                                    </v-btn>
                                     <v-btn
                                         v-if="isEnabledSubtitles === true"
                                         icon
@@ -199,12 +205,13 @@ import NormalVideo from '@/components/video/NormalVideo.vue';
 import RecordedHLSStreamingVideo from '@/components/video/RecordedHLSStreamingVideo.vue';
 import RecordedStreamingVideo from '@/components/video/RecordedStreamingVideo.vue';
 import LiveMpegTsVideo from '@/components/video/LiveMpegTsVideo.vue';
-import * as VideoParam from '@/components/video/ViedoParam';
+import * as VideoParam from '@/components/video/VideoParam';
 import container from '@/model/ModelContainer';
 import UaUtil from '@/util/UaUtil';
 import Util from '@/util/Util';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { IVideoPlayerSettingModel } from '@/model/storage/video/IVideoPlayerSettingModel';
+import CaptureUtil from '@/util/CaptureUtil';
 
 interface SpeedItem {
     text: string;
@@ -241,6 +248,9 @@ export default class VideoContainer extends Vue {
     public currentTimeStr: string = '--:--';
     public durationStr: string = '--:--';
     public playbackRate: number = 1.0;
+
+    // クリップボード有効
+    public isEnabledClipboard: boolean = !UaUtil.isiOS();
 
     // 字幕状態 (表示用)
     public isEnabledSubtitles: boolean = false;
@@ -749,6 +759,47 @@ export default class VideoContainer extends Vue {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    /**
+     * キャプチャ実行
+     */
+    public capture(): void {
+        if (typeof this.$refs.video === 'undefined') {
+            return;
+        }
+        const ci: CaptureUtil.CaptureInfo = {
+            dataUrl: (this.$refs.video as any).capture(),
+            position: this.getVideoCurrentTime(),
+            width: this.getVideoWidth(),
+            height: this.getVideoHeight(),
+            method: 'upload',
+        };
+        this.$emit('onCapture', ci);
+    }
+
+    /**
+     * クリップボードにコピー
+     */
+    public clipboardCopy(): void {
+        const ci: CaptureUtil.CaptureInfo = {
+            dataUrl: (this.$refs.video as any).capture(),
+            position: this.getVideoCurrentTime(),
+            width: this.getVideoWidth(),
+            height: this.getVideoHeight(),
+            method: 'clipboard',
+        };
+        this.$emit('onCapture', ci);
+    }
+
+    public getVideoWidth(): number {
+        const video = (this.$refs.video as BaseVideo).getVideoElement();
+        return video === null ? 0 : video.videoWidth;
+    }
+
+    public getVideoHeight(): number {
+        const video = (this.$refs.video as BaseVideo).getVideoElement();
+        return video === null ? 0 : video.videoHeight;
     }
 
     /**
